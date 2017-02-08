@@ -4,8 +4,9 @@ const Hapi = require('hapi');
 var Path = require('path');
 
 var mysql      = require('mysql');
+
 var connection = mysql.createConnection({
-  host     : 'localhost',
+  host     : process.env.IP,
   user     : 'root',
   password : '',
   database : 'evaluame'
@@ -14,8 +15,8 @@ var connection = mysql.createConnection({
 const server = new Hapi.Server();
 
 server.connection({
-    host: 'localhost',
-    port: 8000
+    host: process.env.IP,
+    port: process.env.PORT
 });
 
 server.register(require('vision'), function(err) {
@@ -29,7 +30,7 @@ server.register(require('vision'), function(err) {
       handler: function (request, reply) {
 
 
-          connection.query('SELECT * FROM evaluaciones', function (error, results, fields) {
+          connection.query('SELECT * FROM Evaluaciones', function (error, results, fields) {
             if (error) throw error;
           return reply.view('index', {name: results[0].Profesor});
           });
